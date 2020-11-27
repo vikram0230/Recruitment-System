@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recruitment/constants.dart';
 
@@ -5,6 +6,7 @@ import 'Candidate/candidate_home.dart';
 import 'Organisation/org_home.dart';
 import 'Widgets/custom_textfield.dart';
 import 'Widgets/main_action_button.dart';
+import 'firebase_helper.dart';
 
 class SignUpScreen extends StatefulWidget {
   static String route = 'csignup';
@@ -18,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController oPasswordController = TextEditingController();
   TextEditingController cEmailController = TextEditingController();
   TextEditingController cPasswordController = TextEditingController();
+  FirebaseHelper firebaseHelper = FirebaseHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +84,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           horizontal: 100.0, vertical: 15),
                       child: MainActionButton(
                         label: 'Signup',
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, OrganisationHome.route);
+                        onPressed: () async {
+                          User user =
+                              await firebaseHelper.signUpWithEmailAndPassword(
+                            email: oEmailController.text,
+                            password: oPasswordController.text,
+                            isOrg: true,
+                          );
+                          if (user != null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => OrganisationHome(
+                                  user: user,
+                                ),
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),
@@ -130,8 +148,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           horizontal: 100.0, vertical: 15),
                       child: MainActionButton(
                         label: 'Signup',
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, CandidateHome.route);
+                        onPressed: () async {
+                          User user =
+                              await firebaseHelper.signUpWithEmailAndPassword(
+                            email: cEmailController.text,
+                            password: cPasswordController.text,
+                            isOrg: false,
+                          );
+                          if (user != null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => CandidateHome(
+                                  user: user,
+                                ),
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),

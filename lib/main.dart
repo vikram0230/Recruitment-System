@@ -6,8 +6,21 @@ import 'package:recruitment/Organisation/create_job_vacancy.dart';
 import 'package:recruitment/Organisation/org_home.dart';
 import 'package:recruitment/Organisation/org_profile.dart';
 import 'package:recruitment/signup_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: FirebaseOptions(
+  //     apiKey: "AIzaSyCVQRkyGFknC7IdiRrWzx0RsEhfQ4OACjs",
+  //     authDomain: "recruitment-system-2658f.firebaseapp.com",
+  //     databaseURL: "https://recruitment-system-2658f.firebaseio.com",
+  //     projectId: "recruitment-system-2658f",
+  //     storageBucket: "recruitment-system-2658f.appspot.com",
+  //     messagingSenderId: "354638760368",
+  //     appId: "1:354638760368:web:285715041094bd64602e75",
+  //   ),
+  // );
   runApp(MyApp());
 }
 

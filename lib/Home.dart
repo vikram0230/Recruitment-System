@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recruitment/Candidate/candidate_home.dart';
 import 'package:recruitment/Organisation/org_home.dart';
@@ -5,6 +6,8 @@ import 'package:recruitment/Widgets/custom_textfield.dart';
 import 'package:recruitment/Widgets/main_action_button.dart';
 import 'package:recruitment/constants.dart';
 import 'package:recruitment/signup_screen.dart';
+
+import 'firebase_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   static String route = 'home';
@@ -18,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController oPasswordController = TextEditingController();
   TextEditingController cEmailController = TextEditingController();
   TextEditingController cPasswordController = TextEditingController();
+  FirebaseHelper firebaseHelper = FirebaseHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +85,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           horizontal: 100.0, vertical: 15),
                       child: MainActionButton(
                         label: 'Login',
-                        onPressed: () {
-                          Navigator.pushNamed(context, OrganisationHome.route);
+                        onPressed: () async {
+                          User user =
+                              await firebaseHelper.signInWithEmailAndPassword(
+                            email: oEmailController.text,
+                            password: oPasswordController.text,
+                            isOrg: true,
+                          );
+                          if (user != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => OrganisationHome(
+                                  user: user,
+                                ),
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),
@@ -139,8 +158,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           horizontal: 100.0, vertical: 15),
                       child: MainActionButton(
                         label: 'Login',
-                        onPressed: () {
-                          Navigator.pushNamed(context, CandidateHome.route);
+                        onPressed: () async {
+                          User user =
+                              await firebaseHelper.signInWithEmailAndPassword(
+                            email: cEmailController.text,
+                            password: cPasswordController.text,
+                            isOrg: false,
+                          );
+                          if (user != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => CandidateHome(
+                                  user: user,
+                                ),
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),

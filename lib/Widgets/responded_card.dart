@@ -3,21 +3,22 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import 'main_action_button.dart';
 
-class JobCard extends StatelessWidget {
-  final String label;
-  final Function onPressed;
+class RespondedCard extends StatelessWidget {
   final String title;
-  final String salary;
-  final String company;
+  final String subtitle;
+  final int status;
 
-  JobCard({this.label,this.onPressed, this.title, this.salary, this.company});
+  const RespondedCard({
+    this.title,
+    this.subtitle, this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5),
-      height: 180,
-      width: 400,
+      height: 150,
+      width: 300,
       decoration: BoxDecoration(
         color: kLightBlue,
         borderRadius: BorderRadius.circular(10),
@@ -37,25 +38,15 @@ class JobCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: Text(
-              company,
+              subtitle,
               style: TextStyle(fontSize: 16),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Text(
-              '₹ $salary',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
-              ),
-            ),
-          ),
           SizedBox(
-            width: 200,
+            width: 150,
             child: MainActionButton(
-              label: label,
-              onPressed: onPressed,
+              label: status == 1 ? 'Rejected' : 'Selected',
+              onPressed: (){},
             ),
           ),
         ],

@@ -1,11 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recruitment/Widgets/custom_textfield.dart';
 import 'package:recruitment/Widgets/main_action_button.dart';
+import 'package:recruitment/databasehelper.dart';
+import 'package:recruitment/firebase_helper.dart';
 
 import '../constants.dart';
 
 class CreateJob extends StatefulWidget {
   static String route = 'createjob';
+  final User user;
+  final organisationData;
+
+  const CreateJob({this.user, this.organisationData});
   @override
   _CreateJobState createState() => _CreateJobState();
 }
@@ -14,6 +21,8 @@ class _CreateJobState extends State<CreateJob> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController salaryController = TextEditingController();
+  FirestoreHelper firestoreHelper = FirestoreHelper();
+  FirebaseHelper firebaseHelper = FirebaseHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +84,17 @@ class _CreateJobState extends State<CreateJob> {
                   width: 350,
                   child: MainActionButton(
                     label: 'Save',
-                    onPressed: () {
+                    onPressed: () async {
+                      firestoreHelper.addJobVacancy(
+                        uid: widget.user.uid,
+                        data: {
+                          //TODO: Add Company Name
+                          'company' : widget.organisationData['name'],
+                          'title': titleController.text,
+                          'desc' : descController.text,
+                          'salary' : salaryController.text,
+                        },
+                      );
                       Navigator.pop(context);
                     },
                   ),

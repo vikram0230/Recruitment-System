@@ -6,10 +6,12 @@ class MainActionButton extends StatelessWidget {
   MainActionButton({
     this.onPressed,
     this.label,
+    this.color,
   });
 
   final VoidCallback onPressed;
   final String label;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class MainActionButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
-        color: kdarkBlue,
+        color: color ?? kdarkBlue,
         child: Text(
           label,
           style: GoogleFonts.alata(

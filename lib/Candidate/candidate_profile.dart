@@ -1,22 +1,52 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recruitment/Widgets/custom_textfield.dart';
 import 'package:recruitment/Widgets/main_action_button.dart';
 
 import '../constants.dart';
+import '../databasehelper.dart';
+import '../firebase_helper.dart';
 
 class CandidateProfile extends StatefulWidget {
   static String route = 'candiprofile';
+  final User user;
+  final candidateData;
+
+  const CandidateProfile({this.user, this.candidateData});
   @override
   _CandidateProfileState createState() => _CandidateProfileState();
 }
 
 class _CandidateProfileState extends State<CandidateProfile> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
-  TextEditingController education1Controller = TextEditingController();
-  TextEditingController education2Controller = TextEditingController();
-  TextEditingController education3Controller = TextEditingController();
+  TextEditingController nameController;
+  TextEditingController ageController;
+  TextEditingController genderController;
+  TextEditingController education1Controller;
+  TextEditingController education2Controller;
+  TextEditingController education3Controller;
+  FirestoreHelper firestoreHelper = FirestoreHelper();
+  FirebaseHelper firebaseHelper = FirebaseHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.candidateData.data()['name'] != null){
+      nameController = TextEditingController(text: widget.candidateData['name']??'');
+      ageController = TextEditingController(text: widget.candidateData['age']??'');
+      genderController = TextEditingController(text: widget.candidateData['gender']??'');
+      education1Controller = TextEditingController(text: widget.candidateData['education1']??'');
+      education2Controller = TextEditingController(text: widget.candidateData['education2']??'');
+      education3Controller = TextEditingController(text: widget.candidateData['education3']??'');
+    }
+    else {
+      nameController = TextEditingController();
+      ageController = TextEditingController();
+      genderController = TextEditingController();
+      education1Controller = TextEditingController();
+      education2Controller = TextEditingController();
+      education3Controller = TextEditingController();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +139,18 @@ class _CandidateProfileState extends State<CandidateProfile> {
                   width: 350,
                   child: MainActionButton(
                     label: 'Save',
-                    onPressed: () {
+                    onPressed: () async {
+                      firestoreHelper.updateCandidateProfile(
+                        uid: widget.user.uid,
+                        data: {
+                          'name': nameController.text,
+                          'age' : ageController.text,
+                          'gender' : genderController.text,
+                          'education1' : education1Controller.text,
+                          'education2' : education2Controller.text,
+                          'education3' : education3Controller.text,
+                        },
+                      );
                       Navigator.pop(context);
                     },
                   ),
