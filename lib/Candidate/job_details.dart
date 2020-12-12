@@ -57,7 +57,7 @@ class _JobDetailsState extends State<JobDetails> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Applicants'),
+        title: Text('Job Details'),
         centerTitle: true,
         backgroundColor: kdarkBlue,
       ),
