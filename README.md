@@ -1,6 +1,8 @@
-# recruitment
+# Recruitment System
 
-A new Flutter application.
+Built using Flutter for web.
+
+This system provides a feed of vacant positions in organizations to the candidates. It enables organizations to post vacant positions to the feed.
 
 ## Getting Started
 
